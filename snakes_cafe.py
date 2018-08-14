@@ -80,14 +80,20 @@ def process_input(user_input):
                 ordered = True   
 
     if ordered:
-        print('\n You have ordered', str(item), user_input.title(), '\n')
+        print('You have ordered', str(item), user_input.title())
     else:
         print('Please try to order something on the menu!')
 
     order()
 
 def order():
+    print(dedent(f'''
+        {'*' * WIDTH}
+    '''))
     user_input = input('What would you like to order? \n')
+    print(dedent(f'''
+        {'*' * WIDTH}
+    '''))
     process_input(user_input)
 
 def exit():
