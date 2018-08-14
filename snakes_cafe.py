@@ -3,9 +3,6 @@ import sys
 
 WIDTH = 48
 
-# people = {1: {'Name': 'John', 'Age': '27', 'Sex': 'Male'},
-        #   2: {'Name': 'Marie', 'Age': '22', 'Sex': 'Female'}}
-
 MENU = {
     'Appetizers':
         {
@@ -37,42 +34,13 @@ MENU = {
 }
 
 
-
-DISP_MENU = """
-Appetizers
-----------
-Wings
-Rolls
-Spring Rolls
-
-Entrees
--------
-Hamburger
-Lobster
-Meatball Sub
-
-Desserts
---------
-Ice Cream
-Cake
-Pie
-
-Drinks
-------
-Coffee
-Tea
-Soda
-"""
-
-
-
 def greeting():
     """Function which will greet the user when the application executes for
     the first time.
     """
     ln_one = 'Welcome to the Snakes Cafe!'
     ln_two = 'Please see our menu below.'
-    ln_three = 'To quit at any time, type "quit"'
+    ln_three = 'To quit at any time, type "quit" or "q"'
 
     print(dedent(f'''
         {'*' * WIDTH}
@@ -87,34 +55,40 @@ def greeting():
 
 
 def display_menu():
-    print('Here are the menu items')
-        # print(dedent(f''' 
-        # {(' ' * ((WIDTH - len(DISP_MENU)) // 2)) + DISP_MENU + (' ' * ((WIDTH - len(DISP_MENU)) // 2))}
-        # '''))
+    ln_one = 'Here are the menu items'
+    print(ln_one)
+
     for food_type, items in MENU.items():
-        print(food_type)
+        print(dedent(food_type))
+        
         for key in items:
-            print(key)
-
-
-# for p_id, p_info in people.items():
-    # print("\nPerson ID:", p_id)
-    
-    # for key in p_info:
-    #     print(key + ':', p_info[key])
+            print(dedent(key))
 
 
 def process_input(user_input):
-    if user_input.lower() == 'quit':
+    ordered = False
+    item = ''
+    if user_input.lower() == 'quit' or user_input.lower() == 'q':
         exit()
         return
-    
-    if user_input.title() in MENU:
-        print("blah")
 
-        # if user_input.lower() == i.lower():
-        #     i.value() += 1
+    for food_type, dishes in MENU.items():
+        for dish in dishes:
+            if user_input.title() == dish:
+                dishes[user_input.title()] += 1
+                item = dishes[user_input.title()]
+                ordered = True   
 
+    if ordered:
+        print('\n You have ordered', str(item), user_input.title(), '\n')
+    else:
+        print('Please try to order something on the menu!')
+
+    order()
+
+def order():
+    user_input = input('What would you like to order? \n')
+    process_input(user_input)
 
 def exit():
     print(dedent('''
@@ -125,8 +99,8 @@ def exit():
 def run():
     greeting()
     display_menu()
-    user_input = input('What would you like to order? \n')
-    process_input(user_input)
+    order()
+    
 
 if __name__ == '__main__':
     run()
