@@ -1,5 +1,6 @@
 from textwrap import dedent
 from math import pi
+from uuid import uuid4
 
 import sys
 
@@ -111,6 +112,7 @@ def bill():
         The Snakes Cafe
             "Eatability Counts"
         {'~' * WIDTH}
+        {'Order: ' + str(uuid4())}
         {'~' * WIDTH}
     '''))
     for food_type, dishes in MENU.items():
