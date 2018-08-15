@@ -81,25 +81,51 @@ def greeting():
 def display_menu():
     ln_one = 'Here are the menu items'
     print(ln_one)
-
     for food_type, dishes in MENU.items():
         print(dedent(food_type))
-
         for dish in dishes:
-            print(dedent(dish), dishes[dish][1])
+            print(dedent(dish) + ' $' + str(dishes[dish][1]))
 
 
 def total_order():
-    total_price = 0
+    subtotal_price = 0
     for food_type, dishes in MENU.items():
         for dish in dishes:
             if dishes[dish][0] > 0:
-                total_price += (dishes[dish][0] * dishes[dish][1])
+                subtotal_price += (dishes[dish][0] * dishes[dish][1])
 
+    tax = float(subtotal_price) * .10
+    total_price = subtotal_price + tax
     total_price = '{0:.2f}'.format(total_price)
-    print(total_price)
+    tax = '{0:.2f}'.format(tax)
+    subtotal_price = '{0:.2f}'.format(subtotal_price)
+    print('Subtotal: $' + str(subtotal_price))
+    print('Tax: $' + str(tax))
+    print('Total: $' + str(total_price))
 
 
+def bill():
+    print(dedent(f'''
+        {'~' * WIDTH}
+        {'~' * WIDTH}
+        The Snakes Cafe
+            "Eatability Counts"
+        {'~' * WIDTH}
+        {'~' * WIDTH}
+    '''))
+    for food_type, dishes in MENU.items():
+        for dish in dishes:
+            if dishes[dish][0] > 0:
+                print(dish, 'x' + str(dishes[dish][0]), '$' + str(dishes[dish][1]))
+
+    print(dedent(f'''
+        {'~' * WIDTH}
+    '''))
+    total_order()
+    print(dedent(f'''
+        {'~' * WIDTH}
+
+    '''))
 
 def process_input(user_input):
     ordered = False
@@ -107,20 +133,30 @@ def process_input(user_input):
     if user_input.lower() == 'quit' or user_input.lower() == 'q':
         exit()
         return
+    if 'Order' in user_input.title():
+        bill()
+    if 'Menu' in user_input.title():
+        display_menu()
 
     for food_type, dishes in MENU.items():
         for dish in dishes:
+            if user_input.title() == food_type:
+                print(dedent(dish) + ' $' + str(dishes[dish][1]))
             if user_input.title() == dish:
                 # print(dishes[str(dish)][0])
                 dishes[dish][0] += 1
                 item = dishes[user_input.title()]
                 ordered = True
+            if 'Remove' in user_input.title() and dish in user_input.title() and dishes[dish][0] > 0:
+                dishes[dish][0] -= 1
+                print('Removed', dish, 'from your order')
+                total_order()
 
     if ordered:
         print('You have ordered', str(item)[1], user_input.title())
-        print(total_order())
+        total_order()
     else:
-        print('Please try to order something on the menu!')
+        print('Order something on the menu!')
 
     order()
 
@@ -149,4 +185,3 @@ def run():
 
 if __name__ == '__main__':
     run()
-
