@@ -1,5 +1,4 @@
 from textwrap import dedent
-from math import pi
 from uuid import uuid4
 
 import sys
@@ -168,9 +167,10 @@ def total_order():
     total_price = '{0:.2f}'.format(total_price)
     tax = '{0:.2f}'.format(tax)
     subtotal_price = '{0:.2f}'.format(subtotal_price)
-    print('Subtotal: $' + str(subtotal_price))
-    print('Tax: $' + str(tax))
-    print('Total: $' + str(total_price))
+    return subtotal_price, tax, total_price
+    # print('Subtotal: $' + str(subtotal_price))
+    # print('Tax: $' + str(tax))
+    # print('Total: $' + str(total_price))
 
 
 def bill():
