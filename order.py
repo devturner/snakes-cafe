@@ -44,7 +44,7 @@ class Order:
         return self.dishes
 
 
-    def update_totals(self, tax, subtotal, total):
+    def _update_totals(self, tax, subtotal, total):
         """Set the objects totals for tax, subtotal, and total price
         """
         self.tax = tax
