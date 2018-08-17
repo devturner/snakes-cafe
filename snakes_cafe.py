@@ -74,6 +74,7 @@ MENU = {
         },
 }
 
+SPECIAL_MENU = {}
 
 def greeting():
     """Function which will greet the user when the application executes for
@@ -96,6 +97,8 @@ def greeting():
 
 
 def display_defualt_menu():
+    """ Display the menu that is built into the application and call the order function
+    """
     ln_one = 'Here are the menu items'
     print(ln_one)
     for food_type, dishes in MENU.items():
@@ -104,29 +107,56 @@ def display_defualt_menu():
             print(dedent(dish) + ' $' + str(dishes[dish][1]))
     order()
 
+def get_users_filepath():
+    """ Get the user file path, error check it, and if the file is there, use it
+    """
+    user_input = input('Provide your file path, like: ./assets/special_menu.csv \n')
+    file_path = user_input.split('/')
+    file = file_path[len(file_path)-1].split('.')
+    extension = file[len(file)-1]
+    # import pdb; pdb.set_trace()
+    if extension != 'csv':
+        print('Please provide a csv file')
+        return choose_menu()
+    else:
+        try:
+            with open(user_input) as csvfile:
+                menu = csv.DictReader(csvfile)
+                convert_and_display_special_menu(menu)
+        except FileNotFoundError:
+            print('Please provide a valid file path')
+            return choose_menu()
 
-def display_special_menu():
-    with open('special_menu2.csv', newline='') as csvfile:
-        menu = csv.DictReader(csvfile)
-        i = 0
-        for row in menu:
-            i += 1
-            # this is shitty
-            if i == 1 or i == 11 or i == 20 or i == 29 or i == 38 :
-                print(row['type'])
-            else:
-                print(row['dish'], '$' + row['price'])
-    special_order()
+def convert_and_display_special_menu(menu):
+    """Convert the CSV menu into the same format as the exsisting and let users see it.
+    """
+    i = 0
+
+    for row in menu:
+        i += 1
+        # this is shitty
+        if i == 1 or i == 11 or i == 20 or i == 29 or i == 38 :
+            print(row['type'])
+            # SPECIAL_MENU.update(row['type'])
+            # SPECIAL_MENU = {row['type']: {}}
+            # print(SPECIAL_MENU)
+        else:
+            print(row['dish'], '...........$' + row['price'])
+    order()
 
 
 def choose_menu():
-    user_input = input('Enter 1 for our normal menu or 2 for our special menu \n')
+    """Function which will let the user choose their menu.
+    """
+    user_input = input('Enter 1 for our normal menu or 2 for an external menu \n')
     if user_input == str(1):
         display_defualt_menu()
     elif user_input == str(2):
-        display_special_menu()
+        get_users_filepath()
 
 def total_order():
+    """ Doing the math on the order to get the subtotal, tax, and total
+    """
     subtotal_price = 0
     for food_type, dishes in MENU.items():
         for dish in dishes:
@@ -144,6 +174,8 @@ def total_order():
 
 
 def bill():
+    """ Setting the UUID and showing the customer their receipt for their order
+    """
     print(dedent(f'''
         {'~' * WIDTH}
         {'~' * WIDTH}
@@ -168,6 +200,8 @@ def bill():
     '''))
 
 def process_input(user_input):
+    """Process all the user input from the program
+    """
     ordered = False
     item = ''
     if user_input.lower() == 'quit' or user_input.lower() == 'q':
@@ -176,7 +210,7 @@ def process_input(user_input):
     if 'Order' in user_input.title():
         bill()
     if '2' in user_input.title():
-        display_special_menu()
+        get_users_filepath()
     if '1' in user_input.title() or 'Menu' in user_input.title():
         display_defualt_menu()
 
@@ -204,20 +238,26 @@ def process_input(user_input):
     order()
 
 def special_process_input(user_input):
+    """ Hopefully not needed after refactor
+    """
     pass
 
 
 def order():
+    """ Prompt the guest to order something
+    """
     print(dedent(f'''
         {'*' * WIDTH}
     '''))
-    user_input = input('What would you like to order? \n')
+    user_input = input('What would you like to order, or remove from your order? \n')
     print(dedent(f'''
         {'*' * WIDTH}
     '''))
     process_input(user_input)
 
 def special_order():
+    """ Order from the special menu, (SHOULD NOT BE NEEDED, DOES NOT WORK)
+    """
     print(dedent(f'''
         {'*' * WIDTH}
     '''))
@@ -228,15 +268,22 @@ def special_order():
     special_process_input(user_input)
 
 def exit():
+    """ Exits the app
+    """
     print(dedent('''
         'Thanks for visiting'
     '''))
     sys.exit()
 
 def run():
+    """ Initilize the application
+    """
     greeting()
     choose_menu()
 
 
 if __name__ == '__main__':
-    run()
+    try:
+        run()
+    except(KeyboardInterrupt):
+        exit()

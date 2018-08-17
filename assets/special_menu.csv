@@ -1,0 +1,46 @@
+type,dish,order,price,inventory
+Appetizers,Animal Style Wings,0,3.44,8
+Appetizers,Animal Style Spring Rolls,0,7.55,8
+Appetizers,Animal Style Rolls,0,2.66,8
+Appetizers,Animal Style Cookies,0,4.34,8
+Appetizers,Animal Style French Fires,0,3.21,8
+Appetizers,Animal Style Poutine,0,7.65,8
+Appetizers,Animal Style Hotter Wings,0,8.99,8
+Appetizers,Animal Style Chicken Tenders,0,9.99,8
+Appetizers,Animal Style Bean Salad,0,2.99,8
+Entrees,Animal Style Hamburger,0,12.79,8
+Entrees,Animal Style Lobster,0,17.49,8
+Entrees,Animal Style Meatball Sub,0,9.85,8
+Entrees,Animal Style Pizza,0,14.26,8
+Entrees,Animal Style Hot Pocket,0,7.99,8
+Entrees,Animal Style Pasta,0,5.99,8
+Entrees,Animal Style Tofu,0,9.99,8
+Entrees,Animal Style Tacos,0,9.99,8
+Entrees,Animal Style Veggie Burger,0,12.99,8
+Desserts,Animal Style Cake,0,2.00,8
+Desserts,Animal Style Ice Cream,0,1.04,8
+Desserts,Animal Style Pie,0,4.08,8
+Desserts,Animal Style Malt,0,3.79,8
+Desserts,Animal Style Rootbeer Float,0,4.59,8
+Desserts,Animal Style Shake,0,3.99,8
+Desserts,Animal Style Chocolate,0,2.99,8
+Desserts,Animal Style Caramelled Nuts,2,0,5.99,8
+Desserts,Animal Style Candy,0,1.99,8
+Drinks,Animal Style Tea,0,2.79,8
+Drinks,Animal Style Coffee,0,1.99,8
+Drinks,Animal Style Soda,0,1.99,8
+Drinks,Animal Style Beer,0,6.49,8
+Drinks,Animal Style Hot Tea,0,1.99,8
+Drinks,Animal Style Milk,0,1.99,8
+Drinks,Animal Style Import Beer,0,2.99,8
+Drinks,Animal Style Water,0,2.99,8
+Drinks,Animal Style Esspresso,0,2.99,8
+Sides,Animal Style Salad,0,2.39,8
+Sides,Animal Style Beans,0,1.96,8
+Sides,Animal Style Steamed Vegetables,0,3.49,8
+Sides,Animal Style Coleslaw,0,2.79,8
+Sides,Animal Style Baked Potato,0,5.99,8
+Sides,Animal Style Eggs,0,2.19,8
+Sides,Animal Style Chips,0,2.99,8
+Sides,Animal Style Apples,0,2.99,8
+Sides,Animal Style Big Salad,0,2.99,8
