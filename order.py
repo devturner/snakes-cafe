@@ -3,7 +3,7 @@ from textwrap import dedent
 WIDTH = 48
 
 
-class Order:
+class Order(object):
     """A record of the customers order, their uuid, and the receipt
     """
     def __init__(self):
