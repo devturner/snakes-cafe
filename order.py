@@ -15,7 +15,6 @@ class Order(object):
         self.tax = 0
         self.total = 0
 
-
     def add_item(self, dish, quantity=1):
         """ Adds an item to the order, and a quantity greater than 1, if provided
         """
@@ -44,7 +43,7 @@ class Order(object):
         return self.dishes
 
 
-    def _update_totals(self, tax, subtotal, total):
+    def update_totals(self, tax, subtotal, total):
         """Set the objects totals for tax, subtotal, and total price
         """
         self.tax = tax
@@ -86,11 +85,10 @@ class Order(object):
     def print_receipt(self):
     #     """ Creates a file containing the text of the user’s full order
     #     """
-        order = str(self.display_order())
+        # order = str(self.display_order())
         with open(f'{self.id}.txt', 'w') as f:
             f.write(str(self.display_order()))
-            # print(self.display_order(), file=f)
-
+        print('The receipt has been printed as well')
 
     def __repr__(self):
         return f'<Order: {self.id}, | Items: {len(self.dishes)} | Total: {self.total}>'

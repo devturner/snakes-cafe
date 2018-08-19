@@ -86,7 +86,7 @@ def greeting():
     the first time.
     """
     ln_one = 'Welcome to the Snakes Cafe!'
-    ln_two = 'Please select a menu.'
+    ln_two = 'Please select a menu. Order > view order & Print > print receipt'
     ln_three = 'To quit at any time, type "quit" or "q"'
 
     print(dedent(f'''
@@ -150,19 +150,19 @@ def get_users_filepath():
 def choose_menu():
     """Function which will let the user choose their menu.
     """
-    user_input = input('Enter 1 for our normal menu or 2 for an external menu \n')
-    if user_input == str(1):
+    user_input = input('Enter Og for our normal menu or Cust for an external menu \n')
+    if 'Og' in user_input.title():
         display_menu(built_in_menu())
-    elif user_input == str(2):
+    elif 'Cust' in user_input.title():
         get_users_filepath()
 
 
 def total_order(ticket):
     """ Doing the math on the order to get the subtotal, tax, and total
     """
-    tax = guest_ticket.tax
-    total_price = guest_ticket.total
-    subtotal_price = guest_ticket.subtotal
+    tax = 0
+    total_price = 0
+    subtotal_price = 0
     for ordered_food, quantity in ticket.dishes.items():
         for food_type, dishes in menu.items():
             for dish, value in dishes.items():
@@ -172,12 +172,12 @@ def total_order(ticket):
                         subtotal_price = cost * quantity
                     else:
                         cost = value[0]
-                        subtotal_price = cost * quantity
+                        subtotal_price += cost * quantity
 
     tax = float(subtotal_price) * .10
     total_price = subtotal_price + tax
-    guest_ticket._update_totals(tax, subtotal_price, total_price)
-    guest_ticket.display_order()
+    guest_ticket.update_totals(tax, subtotal_price, total_price)
+
 
 
 def process_input(user_input):
@@ -190,11 +190,14 @@ def process_input(user_input):
         return
     if 'Order' in user_input.title():
         total_order(guest_ticket)
-        guest_ticket.print_receipt()
-    if '2' in user_input.title():
+        guest_ticket.display_order()
+    if 'Cust' in user_input.title():
         get_users_filepath()
-    if '1' in user_input.title() or 'Menu' in user_input.title():
+    if 'Menu' in user_input.title():
         display_menu(menu)
+    if 'Print' in user_input.title():
+        total_order(guest_ticket)
+        guest_ticket.print_receipt()
 
     for food_type, dishes in menu.items():
         for dish, value in dishes.items():
