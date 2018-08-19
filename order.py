@@ -94,8 +94,7 @@ class Order(object):
         return f'<Order: {self.id}, | Items: {len(self.dishes)} | Total: {self.total}>'
 
     def __len__(self):
-        pass
-
+        return len(self.dishes.keys)
 
     def __str__(self):
         return f'Name: {self.first_name}, ID: {self.emp_id}'

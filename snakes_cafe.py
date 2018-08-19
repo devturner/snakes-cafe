@@ -216,6 +216,12 @@ def process_input(user_input):
                     if quantity > 0 and quantity <= avalible:
                         print(dish + ': ' + str(quantity))
                         guest_ticket.add_item(dish, quantity)
+                        # does not work
+                        if value[0] == '[':
+                            q_s = int(value[-2]) - quantity
+                            value = value[:6] + str(q_s) + value[-1:]
+                        else:
+                            value[1] -= quantity
                         order()
                     else:
                         print('please order > 1, or <', avalible)
@@ -225,11 +231,12 @@ def process_input(user_input):
                     order()
             if 'Remove' in user_input.title() and dish in user_input.title() and dish in guest_ticket.dishes:
                 guest_ticket.remove_item(dish)
+                if value[0] == '[':
+                    pass
+                    # value[-2] = int(value[-2]) + 1
+                else:
+                    value[1] += 1
     order()
-
-
-
-
 
 
 def order():
@@ -259,7 +266,6 @@ def run():
     """
     greeting()
     choose_menu()
-
 
 
 if __name__ == '__main__':
