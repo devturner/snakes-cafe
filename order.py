@@ -1,6 +1,6 @@
 from uuid import uuid4
 from textwrap import dedent
-WIDTH = 48
+WIDTH = 56
 
 
 class Order(object):
@@ -56,42 +56,48 @@ class Order(object):
     def display_order(self):
         """ Prints the order out to the screen so it can be reviewed
         """
-        print(dedent(f'''
-            {'~' * WIDTH}
-            {'~' * WIDTH}
-            The Snakes Cafe
-                "Eatability Counts"
-            {'~' * WIDTH}
-            {'Order: ' + str(uuid4())}
-            {'~' * WIDTH}
+        str1 = str(dedent(f'''
+            {'*' * WIDTH}
+            {'*' * WIDTH}
+                    The Snakes Cafe
+                        "Eatability Counts"
+            {'*' * WIDTH}
+            {'Order: ' + str(self.id)}
+            {'*' * WIDTH}
         '''))
+        str2 = ''
+        print(str1)
         for dish, quantity in self.dishes.items():
-            print(dish, 'x' + str(quantity))
+            print(dish.ljust(WIDTH - 4), 'x' + str(quantity))
+            str2 += (dish.ljust(WIDTH - 3) + 'x' + str(quantity) + '\n')
 
-        print(dedent(f'''
-            {'~' * WIDTH}
-            {'Subtotal: $' + str(self.subtotal)}
-            {'Tax: $' + str(self.tax)}
-            {'Total: $' + str(self.total)}
-            {'~' * WIDTH}
+        str3 = str(dedent(f'''
+            {'*' * WIDTH}
+            {'Subtotal:'.ljust(WIDTH - 6) + '$' + str('{0:.2f}'.format(self.subtotal))}
+            {'Tax:'.ljust(WIDTH - 6) + '$' + str('{0:.2f}'.format(self.tax))}
+            {'Total:'.ljust(WIDTH - 6) + '$' + str('{0:.2f}'.format(self.total))}
+            {'*' * WIDTH}
+            {'*' * WIDTH}
         '''))
+        print(str3)
 
+        return (str1 + str2 + str3)
 
-    # def print_receipt():
+    def print_receipt(self):
     #     """ Creates a file containing the text of the user’s full order
     #     """
-    #     pass
+        order = str(self.display_order())
+        with open(f'{self.id}.txt', 'w') as f:
+            f.write(str(self.display_order()))
+            # print(self.display_order(), file=f)
 
 
-
-
-# <Order #ba99d8... | Items: 4 | Total: $754.23>
     def __repr__(self):
         return f'<Order: {self.id}, | Items: {len(self.dishes)} | Total: {self.total}>'
 
-    def __str__(self):
+    def __len__(self):
         pass
 
 
-    # def __str__(self):
-    #     return f'Name: {self.first_name}, ID: {self.emp_id}'
+    def __str__(self):
+        return f'Name: {self.first_name}, ID: {self.emp_id}'
