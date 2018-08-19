@@ -1,86 +1,92 @@
 from textwrap import dedent
+from order import Order
 from uuid import uuid4
 
 import sys
 import csv
 
-WIDTH = 48
+WIDTH = 56
+menu = {}
+guest_ticket = Order()
 
-MENU = {
-    'Appetizers':
-        {
-            'Wings': [0, 3.44, 10],
-            'Spring Rolls': [0, 7.55, 10],
-            'Rolls': [0, 2.66, 10],
-            'Cookies': [0, 4.34, 10],
-            'French Fires': [0, 3.21, 10],
-            'Poutine': [0, 7.65, 10],
-            'Hotter Wings': [0, 8.99, 10],
-            'Chicken Tenders': [0, 9.99, 10],
-            'Bean Salad': [0, 2.99, 10],
-        },
 
-    'Entrees':
-        {
-            'Hamburger': [0, 12.79, 10],
-            'Lobster': [0, 17.49, 10],
-            'Meatball Sub': [0, 9.85, 10],
-            'Pizza': [0, 14.26, 10],
-            'Hot Pocket': [0, 7.99, 10],
-            'Pasta': [0, 5.99, 10],
-            'Tofu': [0, 9.99, 10],
-            'Tacos': [0, 9.99, 10],
-            'Veggie Burger': [0, 12.99, 10],
-        },
+def built_in_menu():
+    global menu
+    menu = {
+        'Appetizers':
+            {
+                'Wings': [3.44, 10],
+                'Spring Rolls': [7.55, 10],
+                'Rolls': [2.66, 10],
+                'Cookies': [4.34, 10],
+                'French Fires': [3.21, 10],
+                'Poutine': [7.65, 10],
+                'Hotter Wings': [8.99, 10],
+                'Chicken Tenders': [9.99, 10],
+                'Bean Salad': [2.99, 10],
+            },
 
-    'Desserts':
-        {
-            'Cake': [0, 2.00, 10],
-            'Ice Cream': [0, 1.04, 10],
-            'Pie': [0, 4.08, 10],
-            'Malt': [0, 3.79, 10],
-            'Rootbeer Float': [0, 4.59, 10],
-            'Shake': [0, 3.99, 10],
-            'Chocolate': [0, 2.99, 10],
-            'Caramelled Nuts': [0, 2.99, 10],
-            'Candy': [0, .99, 10],
-        },
+        'Entrees':
+            {
+                'Hamburger': [12.79, 10],
+                'Lobster': [17.49, 10],
+                'Meatball Sub': [9.85, 10],
+                'Pizza': [14.26, 10],
+                'Hot Pocket': [7.99, 10],
+                'Pasta': [5.99, 10],
+                'Tofu': [9.99, 10],
+                'Tacos': [9.99, 10],
+                'Veggie Burger': [12.99, 10],
+            },
 
-    'Drinks':
-        {
-            'Tea': [0, .79, 10],
-            'Coffee': [0, 1.99, 10],
-            'Soda': [0, 1.99, 10],
-            'Beer': [0, 6.49, 10],
-            'Hot Tea': [0, .99, 10],
-            'Milk': [0, .99, 10],
-            'Import Beer': [0, 2.99, 10],
-            'Water': [0, 2.99, 10],
-            'Esspresso': [0, 2.99, 10],
-        },
+        'Desserts':
+            {
+                'Cake': [2.01, 10],
+                'Ice Cream': [1.04, 10],
+                'Pie': [4.08, 10],
+                'Malt': [3.79, 10],
+                'Root-beer Float': [4.59, 10],
+                'Shake': [3.99, 10],
+                'Chocolate': [2.99, 10],
+                'Caramelized Nuts': [2.99, 10],
+                'Candy': [0.99, 10],
+            },
 
-    'Sides':
-        {
-            'Salad': [0, 2.39, 10],
-            'Beans': [0, 1.96, 10],
-            'Steamed Vegetables': [0, 3.49, 10],
-            'Coleslaw': [0, 2.79, 10],
-            'Baked Potato': [0, 5.99, 10],
-            'Eggs': [0, 2.19],
-            'Chips': [0, 2.99, 10],
-            'Apples': [0, 2.99, 10],
-            'Big Salad': [0, 2.99, 10],
-        },
-}
+        'Drinks':
+            {
+                'Tea': [.79, 10],
+                'Coffee': [1.99, 10],
+                'Soda': [1.99, 10],
+                'Beer': [6.49, 10],
+                'Hot Tea': [.99, 10],
+                'Milk': [.99, 10],
+                'Import Beer': [2.99, 10],
+                'Water': [2.99, 10],
+                'Espresso': [2.99, 10],
+            },
 
-SPECIAL_MENU = {}
+        'Sides':
+            {
+                'Salad': [2.39, 10],
+                'Beans': [1.96, 10],
+                'Steamed Vegetables': [3.49, 10],
+                'Coleslaw': [2.79, 10],
+                'Baked Potato': [5.99, 10],
+                'Eggs': [2.19, 10],
+                'Chips': [2.99, 10],
+                'Apples': [2.99, 10],
+                'Big Salad': [2.99, 10],
+            },
+    }
+    return(menu)
+
 
 def greeting():
     """Function which will greet the user when the application executes for
     the first time.
     """
     ln_one = 'Welcome to the Snakes Cafe!'
-    ln_two = 'Please select a menu.'
+    ln_two = 'Please select a menu. Order > view order & Print > print receipt'
     ln_three = 'To quit at any time, type "quit" or "q"'
 
     print(dedent(f'''
@@ -95,20 +101,29 @@ def greeting():
     '''))
 
 
-def display_defualt_menu():
+def display_menu(menu):
     """ Display the menu that is built into the application and call the order function
     """
-    ln_one = 'Here are the menu items'
-    print(ln_one)
-    for food_type, dishes in MENU.items():
-        print(dedent(food_type))
-        for dish in dishes:
-            print(dedent(dish) + ' $' + str(dishes[dish][1]))
+    print('Here are the menu items')
+    try:
+        for key, value in menu.items():
+            print(key.title())
+            print('-' * 8)
+            for key, value in menu[key].items():
+                if value[0] == '[':
+                    print(key.ljust(50) + '$' + str(value[1:5]))
+                else:
+                    print(key.ljust(50) + '$' + str(value[0]))
+            print('\n')
+    except KeyError:
+        print('Oops! Something was wrong with your request.')
     order()
+
 
 def get_users_filepath():
     """ Get the user file path, error check it, and if the file is there, use it
     """
+
     user_input = input('Provide your file path, like: ./assets/special_menu.csv \n')
     file_path = user_input.split('/')
     file = file_path[len(file_path)-1].split('.')
@@ -119,128 +134,109 @@ def get_users_filepath():
         return choose_menu()
     else:
         try:
-            with open(user_input) as csvfile:
-                menu = csv.DictReader(csvfile)
-                convert_and_display_special_menu(menu)
-        except FileNotFoundError:
-            print('Please provide a valid file path')
-            return choose_menu()
-
-def convert_and_display_special_menu(menu):
-    """Convert the CSV menu into the same format as the exsisting and let users see it.
-    """
-    i = 0
-
-    for row in menu:
-        i += 1
-        # this is shitty
-        if i == 1 or i == 11 or i == 20 or i == 29 or i == 38 :
-            print(row['type'])
-            # SPECIAL_MENU.update(row['type'])
-            # SPECIAL_MENU = {row['type']: {}}
-            # print(SPECIAL_MENU)
-        else:
-            print(row['dish'], '...........$' + row['price'])
-    order()
+            with open(user_input, 'r') as f:
+                menu_import = csv.reader(f)
+                for row in menu_import:
+                    item = iter(row[1:])
+                    if row[0] in menu.keys():
+                        menu[row[0]].update(dict(zip(item, item)))
+                    else:
+                        menu[row[0]] = dict(zip(item, item))
+                display_menu(menu)
+        except (IndexError, FileNotFoundError) as error:
+            raise Exception('File not found or incorrect filetype; please use a CSV.')
 
 
 def choose_menu():
     """Function which will let the user choose their menu.
     """
-    user_input = input('Enter 1 for our normal menu or 2 for an external menu \n')
-    if user_input == str(1):
-        display_defualt_menu()
-    elif user_input == str(2):
+    user_input = input('Enter Og for our normal menu or Cust for an external menu \n')
+    if 'Og' in user_input.title():
+        display_menu(built_in_menu())
+    elif 'Cust' in user_input.title():
         get_users_filepath()
 
-def total_order():
+
+def total_order(ticket):
     """ Doing the math on the order to get the subtotal, tax, and total
     """
+    tax = 0
+    total_price = 0
     subtotal_price = 0
-    for food_type, dishes in MENU.items():
-        for dish in dishes:
-            if dishes[dish][0] > 0:
-                subtotal_price += (dishes[dish][0] * dishes[dish][1])
+    for ordered_food, quantity in ticket.dishes.items():
+        for food_type, dishes in menu.items():
+            for dish, value in dishes.items():
+                if ordered_food == dish:
+                    if value[0] == '[':
+                        cost = float(value[1:5])
+                        subtotal_price = cost * quantity
+                    else:
+                        cost = value[0]
+                        subtotal_price += cost * quantity
 
     tax = float(subtotal_price) * .10
     total_price = subtotal_price + tax
-    total_price = '{0:.2f}'.format(total_price)
-    tax = '{0:.2f}'.format(tax)
-    subtotal_price = '{0:.2f}'.format(subtotal_price)
-    return subtotal_price, tax, total_price
-    # print('Subtotal: $' + str(subtotal_price))
-    # print('Tax: $' + str(tax))
-    # print('Total: $' + str(total_price))
+    guest_ticket.update_totals(tax, subtotal_price, total_price)
 
 
-def bill():
-    """ Setting the UUID and showing the customer their receipt for their order
-    """
-    print(dedent(f'''
-        {'~' * WIDTH}
-        {'~' * WIDTH}
-        The Snakes Cafe
-            "Eatability Counts"
-        {'~' * WIDTH}
-        {'Order: ' + str(uuid4())}
-        {'~' * WIDTH}
-    '''))
-    for food_type, dishes in MENU.items():
-        for dish in dishes:
-            if dishes[dish][0] > 0:
-                print(dish, 'x' + str(dishes[dish][0]), '$' + str(dishes[dish][1]))
-
-    print(dedent(f'''
-        {'~' * WIDTH}
-    '''))
-    total_order()
-    print(dedent(f'''
-        {'~' * WIDTH}
-
-    '''))
 
 def process_input(user_input):
     """Process all the user input from the program
     """
-    ordered = False
-    item = ''
+
+    avalible = 0
     if user_input.lower() == 'quit' or user_input.lower() == 'q':
         exit()
         return
     if 'Order' in user_input.title():
-        bill()
-    if '2' in user_input.title():
+        total_order(guest_ticket)
+        guest_ticket.display_order()
+    if 'Cust' in user_input.title():
         get_users_filepath()
-    if '1' in user_input.title() or 'Menu' in user_input.title():
-        display_defualt_menu()
+    if 'Menu' in user_input.title():
+        display_menu(menu)
+    if 'Print' in user_input.title():
+        total_order(guest_ticket)
+        guest_ticket.print_receipt()
 
-
-    for food_type, dishes in MENU.items():
-        for dish in dishes:
+    for food_type, dishes in menu.items():
+        for dish, value in dishes.items():
             if user_input.title() == food_type:
-                print(dedent(dish) + ' $' + str(dishes[dish][1]))
+                if value[0] == '[':
+                    print(dish.ljust(50) + '$' + str(value[1:5]))
+                else:
+                    print(dish.ljust(50) + '$' + str(value[0]))
             if user_input.title() == dish:
-                # print(dishes[str(dish)][0])
-                dishes[dish][0] += 1
-                item = dishes[user_input.title()]
-                ordered = True
-            if 'Remove' in user_input.title() and dish in user_input.title() and dishes[dish][0] > 0:
-                dishes[dish][0] -= 1
-                print('Removed', dish, 'from your order')
-                total_order()
-
-    if ordered:
-        print('You have ordered', str(item)[1], user_input.title())
-        total_order()
-    else:
-        print('Order something on the menu!')
-
+                if value[0] == '[':
+                    avalible = int(value[-2])
+                else:
+                    avalible = value[1]
+                try:
+                    quantity = int(input('We have x' + str(avalible) + ' in stock. How many would you like? :'))
+                    if quantity > 0 and quantity <= avalible:
+                        print(dish + ': ' + str(quantity))
+                        guest_ticket.add_item(dish, quantity)
+                        # does not work
+                        if value[0] == '[':
+                            q_s = int(value[-2]) - quantity
+                            value = value[:6] + str(q_s) + value[-1:]
+                        else:
+                            value[1] -= quantity
+                        order()
+                    else:
+                        print('please order > 1, or <', avalible)
+                        order()
+                except ValueError:
+                    print("That wasn't a number!", user_input)
+                    order()
+            if 'Remove' in user_input.title() and dish in user_input.title() and dish in guest_ticket.dishes:
+                guest_ticket.remove_item(dish)
+                if value[0] == '[':
+                    pass
+                    # value[-2] = int(value[-2]) + 1
+                else:
+                    value[1] += 1
     order()
-
-def special_process_input(user_input):
-    """ Hopefully not needed after refactor
-    """
-    pass
 
 
 def order():
@@ -249,23 +245,12 @@ def order():
     print(dedent(f'''
         {'*' * WIDTH}
     '''))
-    user_input = input('What would you like to order, or remove from your order? \n')
+    user_input_order = input('What would you like to order, or remove from your order? \n')
     print(dedent(f'''
         {'*' * WIDTH}
     '''))
-    process_input(user_input)
+    process_input(user_input_order)
 
-def special_order():
-    """ Order from the special menu, (SHOULD NOT BE NEEDED, DOES NOT WORK)
-    """
-    print(dedent(f'''
-        {'*' * WIDTH}
-    '''))
-    user_input = input('What would you like to order? \n')
-    print(dedent(f'''
-        {'*' * WIDTH}
-    '''))
-    special_process_input(user_input)
 
 def exit():
     """ Exits the app
@@ -274,6 +259,7 @@ def exit():
         'Thanks for visiting'
     '''))
     sys.exit()
+
 
 def run():
     """ Initilize the application
