@@ -25,7 +25,6 @@ class Order(object):
             self.dishes[dish] = quantity
             return self.dishes
 
-
     def remove_item(self, dish, quantity=1):
         """ Deletes an item to the order, and a quantity greater than 1, if provided
         """
@@ -42,7 +41,6 @@ class Order(object):
 
         return self.dishes
 
-
     def update_totals(self, tax, subtotal, total):
         """Set the objects totals for tax, subtotal, and total price
         """
@@ -50,7 +48,6 @@ class Order(object):
         self.subtotal = subtotal
         self.total = total
         return self
-
 
     def display_order(self):
         """ Prints the order out to the screen so it can be reviewed
